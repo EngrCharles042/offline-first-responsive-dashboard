@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 
 const Dashboard = () => {
     const [contacts, setContacts] = useState([]);
+    const zoom = 20;
 
     useEffect(() => {
         const mockContacts = [
@@ -53,6 +53,7 @@ const Dashboard = () => {
         return addresses[randomIndex];
     };
 
+
     return (
         <div style={styles.container}>
             <h2>Dashboard</h2>
@@ -89,24 +90,15 @@ const Dashboard = () => {
             {/* Map View */}
             <div style={styles.section}>
                 <h3>Map View</h3>
-                <MapContainer center={[40.748817, -73.9857]} zoom={12} style={styles.map}>
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    {contacts.map((contact) => (
-                        <Marker key={contact.id} position={[parseFloat(contact.latitude), parseFloat(contact.longitude)]}>
-                            <Popup>
-                                <div>
-                                    <h4>{contact.name}</h4>
-                                    <p>Phone: {contact.phoneNumber}</p>
-                                    <p>Email: {contact.email}</p>
-                                    <p>Address: {getRandomAddress(contact.addresses)}</p>
-                                </div>
-                            </Popup>
-                        </Marker>
-                    ))}
-                </MapContainer>
+                <iframe
+                    src={`https://maps.google.com/maps?q=${contacts[2]?.latitude},${contacts[2]?.longitude}&z=${zoom}&output=embed`}
+                    className="w-[100%] h-[60vh] shadow-xl"
+                    style={styles.contain}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade">
+
+                </iframe>
             </div>
         </div>
     );
@@ -127,7 +119,7 @@ const styles = {
         borderCollapse: "collapse",
         marginBottom: "20px",
     },
-    map: {
+    contain: {
         height: '400px',
         width: '100%',
     },
